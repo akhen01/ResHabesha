@@ -9,3 +9,4 @@ Currently, two official plugins are available:
 # Restaurant-Frontend
 # Restaurant-Frontend
 # Restaurant-Frontend
+# RestaurantEXM
