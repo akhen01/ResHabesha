@@ -1,31 +1,31 @@
 import React, {useState} from 'react'
 import { NavLink } from 'react-router-dom'
 import Menu from "../../assets/menu-bar-2.png"
-import Logo from "../../assets/TALogo.jpg"
+import Logo from "../../assets/Habesha_restaurant_logo-removebg-preview.png"
 function Header() {
 
     const [isOpen, setIsOpen] = useState(false)
 
     const navItems = [
         {
-            name: "Itro",
+            name: "መእተዊ",
             slug: "/#intro",
         },
         {
-            name: "About",
+            name: "መላለዪ",
             slug: "/#about",
         },
         {
-            name: "Our Service",
+            name: "ኣገልግሎትና",
             slug: "/#ourService",
         },
         
         {
-            name: "Menu",
+            name: "ትሕዝቶና",
             slug: "/menu",
         },
         {
-            name: "Gallery",
+            name: "ስእልታትና",
             slug: "/gallery",
         },
         
@@ -33,9 +33,9 @@ function Header() {
   return (
     <header className='fixed top-0 w-full bg-gray-50 border-bgCutsom border-y-2 z-50'>
         
-            <nav className='flex py-3'>
+            <nav className='flex '>
                 <div className='mr-4'>
-                  <img className="hidden sm:block w-12 h-12 ml-2" src={Logo} alt="Logo" />
+                  <img className="hidden sm:block w-10 h-10 ml-2" src={Logo} alt="Logo" />
                 </div>
                 <ul className='hidden ml-auto sm:flex space-x-8'>
                     {
@@ -65,14 +65,14 @@ function Header() {
                     </li>
                 </ul>
                 {isOpen && (
-              <div className="fixed inset-0 bg-bgCutsom bg-opacity-90 flex flex-col items-center justify-center z-40">
+              <div className="fixed inset-2 bg-bgCutsom bg-opacity-90 flex flex-col items-center justify-center z-40 overflow-hidden h-svh">
                 <button onClick={()=>setIsOpen(false)} className='text-black text-2xl absolute right-5 top-5'>X</button>
                 {
                         navItems.map((navItem) => (
                                 <li className="list-none" key={navItem.name}>
                                   <button onClick={()=>setIsOpen(false)}>
                                     <NavLink
-                                      className="inline-block px-6 py-2 relative text-gray-600 font-semibold text-lg sm:hover:text-gray-900 transition duration-300 group"
+                                      className="inline-block py-6 relative text-gray-600 font-semibold text-3xl sm:hover:text-gray-900 transition duration-300 group"
                                       to={navItem.slug}>
                                         {navItem.name}
                                     </NavLink>

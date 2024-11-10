@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useRef, useState, useEffect} from 'react'
 import ades from "../assets/menu/menu/ades.jpg"
 import alecha from "../assets/menu/menu/alecha.jpg"
 import daboqolo from "../assets/menu/menu/daboqolo.jpg"
@@ -13,19 +13,36 @@ import shiro from "../assets/menu/menu/shiro.jpg"
 import tea from "../assets/menu/menu/tea.jpg"
 import Tibs from "../assets/menu/menu/Tibs.jpg"
 import xebhiderho from "../assets/menu/menu/xebhi derho.jpg"
+import { initializeVisibilityObserver } from './visiblityAnim/initializeVisibilityObserver'
 
 function Menu() {
+  const elementRefs = useRef([]);
+  const [visibleElements, setVisibleElements] = useState(new Set());
+
+  useEffect(() => {
+    const observer = initializeVisibilityObserver(elementRefs.current, (visibleEl) => {
+      setVisibleElements((prevVisibleElements) => {
+        const newVisibleElements = new Set(prevVisibleElements);
+        newVisibleElements.add(visibleEl);
+        return newVisibleElements;
+      });
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const Items = [
     {
       cata: "ናይ ስዕረት (Non Vegeterian)",
-      item: "ጸብሒ ደርሆ (Doro Wat)",
+      item: "ጸብሒ ደርሆ (Tsebhi Derho)",
       ingre: "ደርሆ (Chicken), አንቋቕሖ (Eggs), በርበረ (Habeshan Chili spice), እና ሽንጉርት (Onions)",
       img: xebhiderho
     },
     {
       cata: "ናይ ስዕረት (Non Vegeterian)",
-      item: "ሽሮ ዋጥ (Shiro Wat)",
+      item: "ሽሮ (Shiro)",
       ingre: "ዓተር (Chickpea stew) ሽጉርቲ (onions), ሽጉርቲ ጻዕዳ(garlic), በርበረ(berbere spice).",
       img: shiro
     },
@@ -49,7 +66,7 @@ function Menu() {
     },
     {
       cata: "ናይ ጾም (Vegetarian Options)",
-      item: "ጸብሒ ዓደስ (Misir Wat)",
+      item: "ጸብሒ ዓደስ (Tsebhi Misir)",
       ingre: "ዝተቓመመ ብርስን (Spicy lentil) በርበረ (berbere spice), ሽጉርቲ(onions), ሽጉርቲ ጻዕዳ(garlic), ጅንጅብል(ginger)",
       img: ades
     },
@@ -61,7 +78,7 @@ function Menu() {
     },
     {
       cata: "ተወሳኺ (Sides)",
-      item: "Rice ",
+      item: "Rice ሩዝ ",
       ingre: "ንጹህ ወይ ዘተቓመመ ሩዝ (Plain or seasoned rice)",
       img: rice
     },
@@ -91,7 +108,7 @@ function Menu() {
     },
     {
       cata: "ድሕሪ መግቢ (Desserts)",
-      item: "ሄምባሻ (Himbasha)",
+      item: "ሕምባሻ (Himbasha)",
       ingre: "ፊኖ (Flour), መዓር(Honey)",
       img: hembasha
     },
@@ -114,9 +131,15 @@ function Menu() {
         </h1>
         <ul className="flex flex-wrap text-center my-2 justify-evenly rounded-xl m-4  ">
         {
-          Items.map((item) => item.cata !== "ናይ ስዕረት (Non Vegeterian)" ? null : (
-              <li key={item.item} className='bg-gray-300 flex flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 '>
-                <h1 className='text-center text-xl font-bold mb-4'>
+          Items.map((item, index) => item.cata !== "ናይ ስዕረት (Non Vegeterian)" ? null : (
+            <li
+            key={item.item}
+            ref={(el) => (elementRefs.current[index] = el)}
+            className={`bg-gray-300 flex flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 hover:scale-105
+              ${visibleElements.has(elementRefs.current[index]) ? 'opacity-100' : 'opacity-0'
+            } transition-opacity duration-1000 p-4 border`}
+            >
+              <h1 className='text-center text-xl font-bold mb-4'>
                   {item.item}
                 </h1>
                 <h1 className='text-lg'>
@@ -137,9 +160,15 @@ function Menu() {
         </h1>
         <ul className="flex flex-wrap text-center my-2 justify-evenly rounded-xl m-4  ">
         {
-          Items.map((item) => item.cata !== "ናይ ጾም (Vegetarian Options)" ? null : (
-              <li key={item.item} className='bg-gray-300 flex flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 '>
-                <h1 className='text-center text-xl font-bold mb-4'>
+          Items.map((item, index) => item.cata !== "ናይ ጾም (Vegetarian Options)" ? null : (
+            <li
+            key={item.item}
+            ref={(el) => (elementRefs.current[index] = el)}
+            className={`bg-gray-300 flex flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 hover:scale-105
+              ${visibleElements.has(elementRefs.current[index]) ? 'opacity-100' : 'opacity-0'
+            } transition-opacity duration-1000 p-4 border`}
+            >
+            <h1 className='text-center text-xl font-bold mb-4'>
                   {item.item}
                 </h1>
                 <h1 className='text-lg'>
@@ -162,8 +191,14 @@ function Menu() {
         </h1>
         <ul className="flex flex-wrap text-center my-2 justify-evenly rounded-xl m-4  ">
         {
-          Items.map((item) => item.cata !== "ተወሳኺ (Sides)" ? null : (
-              <li key={item.item} className='bg-gray-300 flex flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 '>
+          Items.map((item, index) => item.cata !== "ተወሳኺ (Sides)" ? null : (
+            <li
+            key={item.item}
+            ref={(el) => (elementRefs.current[index] = el)}
+            className={`bg-gray-300 flex flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 hover:scale-105
+              ${visibleElements.has(elementRefs.current[index]) ? 'opacity-100' : 'opacity-0'
+            } transition-opacity duration-1000 p-4 border`}
+            >  
                 <h1 className='text-center text-xl font-bold mb-4'>
                   {item.item}
                 </h1>
@@ -181,14 +216,19 @@ function Menu() {
 
         <hr />
 
-
         <h1 className=' text-xl md:text:text-2xl font-extrabold text-center font-teko m-2 p-2'>
-          ዝስተ(Drinks)
+        ዝስተ(Drinks)
         </h1>
         <ul className="flex flex-wrap text-center my-2 justify-evenly rounded-xl m-4  ">
         {
-          Items.map((item) => item.cata !== "ዝስተ(Drinks)" ? null : (
-              <li key={item.item} className='bg-gray-300 flex flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 '>
+          Items.map((item, index) => item.cata !== "ዝስተ(Drinks)" ? null : (
+            <li
+            key={item.item}
+            ref={(el) => (elementRefs.current[index] = el)}
+            className={`bg-gray-300 flex flex-col sm:flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 hover:scale-105
+              ${visibleElements.has(elementRefs.current[index]) ? 'opacity-100' : 'opacity-0'
+            } transition-opacity duration-1000 p-4 border`}
+            >  
                 <h1 className='text-center text-xl font-bold mb-4'>
                   {item.item}
                 </h1>
@@ -203,6 +243,8 @@ function Menu() {
           ))
         }
         </ul>
+
+        
 
         <hr />
         
@@ -211,9 +253,15 @@ function Menu() {
         </h1>
         <ul className="flex flex-wrap text-center my-2 justify-evenly rounded-xl m-4  ">
         {
-          Items.map((item) => item.cata !== "ድሕሪ መግቢ (Desserts)" ? null : (
-              <li key={item.item} className='bg-gray-300 flex flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 '>
-                <h1 className='text-center text-xl font-bold mb-4'>
+          Items.map((item, index) => item.cata !== "ድሕሪ መግቢ (Desserts)" ? null : (
+            <li
+            key={item.item}
+            ref={(el) => (elementRefs.current[index] = el)}
+            className={`bg-gray-300 flex flex-col sm:flex-wrap items-center sm:w-1/4 pb-6 font-teko justify-center font-semibold m-2 mb-12 p-2 rounded-lg border-8 border-grey-150 hover:scale-105
+              ${visibleElements.has(elementRefs.current[index]) ? 'opacity-100' : 'opacity-0'
+            } transition-opacity duration-1000 p-4 border`}
+            >
+            <h1 className='text-center text-xl font-bold mb-4'>
                   {item.item}
                 </h1>
                 <h1 className='text-lg'>

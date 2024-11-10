@@ -34,7 +34,7 @@ function OurService() {
         <div className= "flex flex-wrap justify-center text-left w-full border-4 border-e-8 bg-gray-300 sm:mx-12 sm:w-auto">
           {
             Piclist.map((pic) => (
-              <div key={pic} className='flex max-h-96 justify-center ease-in-out cursor-pointer hover:scale-110 p-1'>
+              <div key={pic} className='flex max-h-96 justify-center ease-in-out delay-50 duration-300 cursor-pointer hover:scale-110 p-1'>
                 <img onClick={() => OpenImage(pic)} className=" max-h-96 object-contain " src={pic} alt="Gallery" />
               </div>
             ))
